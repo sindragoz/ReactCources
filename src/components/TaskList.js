@@ -1,17 +1,20 @@
 import React from 'react';
 import TaskItem from './TaskItem';
 import FilterTasks from './FilterTasks';
+import PropTypes from 'prop-types';
+
+
 export default class TaskList extends React.Component{
 	
 		constructor(){
 		let tmpTasks=[
-		{name:'Помыть посуду',descr:'',group:'Выполнить',date:new Date(2018,4,12,6,55,43),filterVisible:true},
-		{name:'Выгулять пса вечером', descr:'',group:'Выполнить',date:new Date(2018,4,13,19,0,0),filterVisible:true},
+		{name:'Помыть посуду',group:'Выполнить',date:new Date(2018,4,12,6,55,43),filterVisible:true},
+		{name:'Выгулять пса вечером',group:'Выполнить',date:new Date(2018,4,13,19,0,0),filterVisible:true},
 		{name:'Доделать реферат',descr:'20+ листов',group:'Выполняется',date:new Date(2018,5,2,6,55,43),filterVisible:true},
-		{name:'Выгулять пса утром',descr:'',group:'Выполнено',filterVisible:true},
+		{name:'Выгулять пса утром',group:'Выполнено',filterVisible:true},
 		{name:'Купить хлеба',descr:'ржаного по 20р',group:'Выполнить',date:new Date(2018,4,11,9,15,40),filterVisible:true},
-		{name:'Сварить картошки',descr:'10 штук',group:'Выполняется',filterVisible:true},
-		{name:'Помыть полы',descr:'',group:'Выполнено',date:new Date(2018,4,20,11,40,10),filterVisible:true},
+		{name:'Сварить картошки',group:'Выполняется',filterVisible:true},
+		{name:'Помыть полы',group:'Выполнено',date:new Date(2018,4,20,11,40,10),filterVisible:true},
 		{name:'Вынести мусор',descr:'не забыть',group:'Выполнить',filterVisible:true}];	
 		super();
 		this.state={Tasks:tmpTasks};
@@ -20,7 +23,6 @@ export default class TaskList extends React.Component{
 	ComponentDidMount(){
 			
 	}
-	
 	filterTaskList=(group)=>{
 		let tmpTasklist=this.state.Tasks;
 		tmpTasklist.map(task=>{task.filterVisible=(task.group==group)});
@@ -61,10 +63,10 @@ export default class TaskList extends React.Component{
 					</tr>
 				</thead>
 				<tbody>
-					{tmpTasks.map(task=>(<TaskItem TaskProps={task}/>))}
+					{tmpTasks.map(task=>(<TaskItem TaskProps={task} key={task.name}/>))}
 				</tbody>
 			</table>
 			<FilterTasks filterTaskList={this.filterTaskList} resetFilter={this.resetFilter}/>
 		</div>)
 	}
-}
+};
