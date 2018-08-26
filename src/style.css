@@ -2,19 +2,22 @@
 	box-sizing:border-box;
 	border-spacing:0px;
 }
-body{
-}
+
 th{
 	background-color:#E1E1E1;
 }
 td{
 	width:250px;
 }
-tr,th,td,table{
+tr,th,td{
 	border:1px solid black;
 }
 tr:hover{
 	background-color:#EBEBEB;
+	cursor:default;
+}
+tr:last-child:hover{
+	background-color:inherit;
 	cursor:default;
 }
 .todo{
@@ -26,9 +29,59 @@ tr:hover{
 .done{
 	background-color:rgba(155,217,145,0.5);
 }
+div:nth-child(1){
+	margin:20px 10px;
+}
 div{
-	margin:15px 0;
+	margin-top:20px;
 }
 button,select{
 	margin:5px 0;
+}
+
+.x, .v, .favorite{
+	border-right: 2px solid black;
+	padding-right: 3px;
+	margin-left:2px;
+	display: inline-block;
+	float:left;
+	cursor:pointer;
+	font-weight: bold;
+}
+.v{
+	color:green;
+}
+
+.v:hover{
+	color:DarkGreeen;
+}
+.x{
+	
+	color:red;
+}
+	
+.x:hover{
+	color:DarkRed;
+}
+
+.favorite{
+	color:Orange;
+}
+
+.favorite:hover{
+	color:Gold;
+}
+
+.fav{
+	background:LightYellow;
+}
+input{
+	width:inherit;
+	height:inherit;
+	box-sizing:border-box;
+	line-height: 20px;
+}
+
+div:nth-child(1) button{
+	margin:2px 0;
 }
