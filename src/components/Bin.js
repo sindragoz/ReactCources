@@ -18,6 +18,7 @@ export default class Bin extends React.Component{
 	ComponentWillReceiveProps(nextProps){
 		this.setState({deletedTasks:nextProps.deletedTasks});
 
+
 	}
 	render(){
 

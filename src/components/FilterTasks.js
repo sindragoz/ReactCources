@@ -3,7 +3,7 @@ export default class FilterTasks extends React.Component{
 	constructor(props){
 		super(props);
 		this.state={
-			currentFilter:'Выполнить'
+			currentFilter:{'todo':false, 'doing':false, 'done':false}
 		}
 	}
 	
@@ -11,20 +11,27 @@ export default class FilterTasks extends React.Component{
 		this.props.resetFilter();
 	}
 	
-	selectFilter(event){
-		this.setState({currentFilter:event.target.value});
+	addFilter(event){
+		let tmpFilter=this.state.currentFilter;
+		tmpFilter[event.target.value]=event.target.checked;
+		console.log(tmpFilter);
+		this.setState({currentFilter:tmpFilter});
 	}
 	
 	render(){
 		const {filterTaskList,resetFilter}=this.props;
 	return (
 		<div>
-		<button onClick={()=>this.props.resetFilter()}>Очистить фильтр</button><br/>
-		<select value={this.state.currentFilter} onChange={this.selectFilter.bind(this)}>
-			<option>Выполнить</option>
-			<option>Выполняется</option>
-			<option>Выполнено</option>
-		</select> <button onClick={()=>this.props.filterTaskList(this.state.currentFilter)}>Применить фильтр</button>	
+		<label>
+		 	<input type="checkBox"  onChange={this.addFilter.bind(this)} value='todo' />Выполнить
+		</label>
+		 <label>
+		 	<input type="checkBox" onChange={this.addFilter.bind(this)} value='doing' />Выполняется
+		</label>
+		<label>
+		 	<input type="checkBox" onChange={this.addFilter.bind(this)} value='done' />Выполнено
+		</label>
+			<button onClick={()=>this.props.filterTaskList(this.state.currentFilter)}>Применить фильтр</button>	
 		</div>
 	);
 	}

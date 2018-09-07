@@ -7,7 +7,7 @@ th{
 	background-color:#E1E1E1;
 }
 td{
-	width:250px;
+	
 }
 tr,th,td{
 	border:1px solid black;
@@ -21,13 +21,15 @@ tr:last-child:hover{
 	cursor:default;
 }
 .todo{
-	background-color:rgba(255,157,154,0.5);
+	/*background-color:rgba(255,157,154,0.5);*/
 }
 .doing{
-	background-color:rgba(240,234,149,0.5);
+	/*background-color:rgba(240,234,149,0.5);*/
+	color:orange;
 }
 .done{
-	background-color:rgba(155,217,145,0.5);
+	/*background-color:rgba(155,217,145,0.5);*/
+	color:green;
 }
 div:nth-child(1){
 	margin:20px 10px;
@@ -37,6 +39,9 @@ div{
 }
 button,select{
 	margin:5px 0;
+}
+h2:hover{
+	cursor:pointer;
 }
 
 .x, .v, .favorite{
@@ -84,4 +89,92 @@ input{
 
 div:nth-child(1) button{
 	margin:2px 0;
+}
+.TaskItem>div .status{
+	border: 2px solid black;
+	width:30px;
+	height:30px;
+	line-height: 26px;
+	text-align: center;
+	font-size: 26px;
+	padding-top:1px;
+}
+
+.TaskItem>div div{
+	padding-top:10px;
+	display: inline-block;
+	float:left;
+	cursor:pointer;
+}
+
+.TaskItem>div div:nth-child(1):hover{
+	background: LightGray;	
+}
+.TaskItem>div div:nth-child(2){
+	min-width:350px;	
+}
+.TaskItem>div div:nth-child(3){
+	padding-left:10px;
+	font-size:20px;
+	line-height: 25px;
+	cursor:pointer;
+}
+.TaskItem>div div:nth-child(2) span{
+	display:inline-block;
+	float:right;
+	cursor:default;
+}
+.clear{
+	clear:both;
+}
+.TaskItem{
+	border-bottom: 1px solid black;
+	//background: LightYellow;
+}
+.TaskItem:hover{
+	border-bottom:1px dashed gray;	
+}
+.TaskList{
+	max-width:600px;
+	border:1px solid black;
+	padding: 35px;
+}
+.TaskList h2{
+	text-align:center;
+	box-sizing: border-box;
+}
+.TaskItem>div div:nth-child(3) span{
+	padding-left:5px;
+}
+.TaskItem>div div:nth-child(3) span:hover{
+	font-size:22px;
+}
+.Unactivated{
+	color:gray;
+}
+.TaskItem a, a:hover, a:visited{
+	color:inherit;
+	font-style:inherit;
+	text-decoration: inherit;
+}
+
+.Additive input{
+	width:110px;
+	margin:2px;
+}
+.Additive select{
+	height:26px;
+}
+.sortButtons div{
+	width:50%;
+	display:inline-block;
+	float:left;
+	text-align: center;
+	border-bottom: 1px solid black;
+	box-sizing: border-box;
+	margin:0;
+
+}
+.sortButtons div:nth-child(1){
+	border-right:1px solid black;
 }

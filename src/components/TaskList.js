@@ -1,30 +1,28 @@
 import React from 'react';
 import TaskItem from './TaskItem';
 import FilterTasks from './FilterTasks';
-import PropTypes from 'prop-types';
-import Bin from './Bin';
 import Additive from './Additive';
+import Tasks from './Tasks';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 export default class TaskList extends React.Component{
 	
-		constructor(){
-		let tmpTasks=[
-		{name:'Помыть посуду',group:'Выполнить',date:new Date(2018,4,12,6,55,43),filterVisible:true,favorite:false},
-		{name:'Выгулять пса вечером',group:'Выполнить',date:new Date(2018,4,13,19,0,0),filterVisible:true,favorite:false},
-		{name:'Доделать реферат',descr:'20+ листов',group:'Выполняется',date:new Date(2018,5,2,6,55,43),filterVisible:true,favorite:false},
-		{name:'Выгулять пса утром',group:'Выполнено',filterVisible:true,favorite:false},
-		{name:'Купить хлеба',descr:'ржаного по 20р',group:'Выполнить',date:new Date(2018,4,11,9,15,40),filterVisible:true,favorite:false},
-		{name:'Сварить картошки',group:'Выполняется',filterVisible:true,favorite:false},
-		{name:'Помыть полы',group:'Выполнено',date:new Date(2018,4,20,11,40,10),filterVisible:true,favorite:false},
-		{name:'Вынести мусор',descr:'не забыть',group:'Выполнить',filterVisible:true,favorite:false}];	
-		let tmpDeletedTasks=[];
-		super();
-		this.state={Tasks:tmpTasks,deletedTasks:tmpDeletedTasks};
+		constructor({match}){	
+		let deletedTasks=[];
+		super(...match);
+		this.state={Tasks,deletedTasks,showDeleted:false};
 	}
 	
-	filterTaskList=(group)=>{
+	filterTaskList=(groups)=>{
 		let tmpTasklist=this.state.Tasks;
-		tmpTasklist.map(task=>{task.filterVisible=(task.group==group)});
+		tmpTasklist.map(task=>{
+		if(task.group=='Выполнить')
+			task.filterVisible=(groups['todo']);
+		if(task.group=='Выполняется')
+			task.filterVisible=(groups['doing']);
+		if(task.group=='Выполнено')
+			task.filterVisible=(groups['done']);
+		});
 		this.setState({Tasks:tmpTasklist});		
 	}
 	
@@ -92,10 +90,68 @@ export default class TaskList extends React.Component{
 		}
 		this.setState({Tasks:tmpTaskList});
 	}
+
+	showBin=()=>{
+		this.setState(prevState=>({showDeleted:!prevState.showDeleted}));
+
+	}
 	render(){
-		let tmpTasks=this.state.Tasks.slice();
-		let tmpDeletedTasks=this.state.deletedTasks.slice();
-		return (<div><h2>Список задач</h2>
+		const tmpTasks=this.state.showDeleted?this.state.deletedTasks.slice():this.state.Tasks.slice();
+		const {match}=this.props;
+		return (
+			<div>
+
+			<div className='TaskList'>
+				<h2>
+				<span onClick={()=>this.showBin()} className={!this.state.showDeleted?"":"Unactivated"}>Список задач</span> 
+				/ 
+				<span onClick={()=>this.showBin()} className={this.state.showDeleted?"":"Unactivated"}>Корзина</span></h2>
+			<div className="sortButtons">
+				<div>
+					<span style={{cursor:'pointer'}} onClick={()=>this.sortTasksByName(-1)}>&#9650;</span><span style={{cursor:'pointer'}} onClick={()=>this.sortTasksByName(1)}>&#9660;</span>
+				</div>
+				<div>
+					<span style={{cursor:'pointer'}} onClick={()=>this.sortTasksByDate(-1)}>&#9650;</span><span style={{cursor:'pointer'}} onClick={()=>this.sortTasksByDate(1)}>&#9660;</span>
+				</div>
+
+			</div>
+			<div className='clear'/>
+					{tmpTasks.map(task=>(<TaskItem TaskProps={task} id={tmpTasks.indexOf(task)} match={match} replaceFunction={!this.state.showDeleted?(this.deleteTask):(this.recoverTask)} replaceIcon={!this.state.showDeleted?('x'):('v')} setFavorite={this.setFavorite}/>))}
+			<Additive addTask={this.addTask} show={!this.state.showDeleted}/>
+			
+
+		</div>
+		<FilterTasks filterTaskList={this.filterTaskList} resetFilter={this.resetFilter}/>
+		</div>	)
+	}
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+return (<div><h2>Список задач</h2>
 			<table style={{textAlign:'center',lineHeight:'25px'}}>
 				<thead style={{fontSize:'20px'}}>
 					<tr>
@@ -106,12 +162,11 @@ export default class TaskList extends React.Component{
 					</tr>
 				</thead>
 				<tbody>
-					{tmpTasks.map(task=>(<TaskItem TaskProps={task} replaceFunction={this.deleteTask} replaceIcon='x' setFavorite={this.setFavorite}/>))}
-					<Additive addTask={this.addTask} />
+					{tmpTasks.map(task=>(<TaskItem TaskProps={task} replaceFunction={!this.state.showDeleted?(this.deleteTask):(this.recoverTask)} replaceIcon={!this.state.showDeleted?('x'):('v')} setFavorite={this.setFavorite}/>))}
+					<Additive addTask={this.addTask} show={!this.state.showDeleted}/>
 				</tbody>
-			</table>			
-			<FilterTasks filterTaskList={this.filterTaskList} resetFilter={this.resetFilter}/>
-			<Bin deletedTasks={tmpDeletedTasks} recoverTask={this.recoverTask}/>
+			</table>		
+			<FilterTasks filterTaskList={this.filterTaskList} resetFilter={this.resetFilter}/>	
+			<button onClick={()=>this.showBin()}>Показать {корзину</button>	
 		</div>)
-	}
-};
+*/
