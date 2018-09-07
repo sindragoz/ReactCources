@@ -1,6 +1,9 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {deleteTaskAction, addTaskAction, changeTaskStatusAction, editTaskAction} from '../actions';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-export default class Additive extends React.Component{
+class Additive extends React.Component{
 	constructor(props){
 		super(props);
 		this.state={name:'',descr:undefined,status:'Выполнить',dateString:''}
@@ -22,10 +25,7 @@ export default class Additive extends React.Component{
 	}
 	render(){
 		const {name,descr,status,dateString}=this.state;
-		if(!this.props.show)
-			return(<div></div>);
-				else
-				
+		let date=isNaN(new Date(dateString).getTime())?undefined:new Date(dateString);
 		return(<div className='Additive'>
 			<select value={this.state.status} style={{width:'inherit'}} onChange={this.handleAddTaskStatus.bind(this)}>
 				<option>Выполнить</option>
@@ -36,7 +36,18 @@ export default class Additive extends React.Component{
 			<input placeholder='Описание' onBlur={this.handleAddTaskDescr.bind(this)}/>
 			
 			<input placeholder='(гггг,мм,дд ч:м:с)' onBlur={this.handleAddTaskDate.bind(this)}/>				
-			<button onClick={()=>this.props.addTask(name,descr,status,dateString)}>Добавить</button>
+			<button onClick={()=>this.props.addTask({id:this.props.last_id, name, descr, group:status, date, filterVisible:true,favorite:false,isDeleted:false })}>Добавить</button>
+			<Link to="/list">назад</Link>
 		</div>);
 	}
 }
+
+function mapDispatchToProps(dispatch){
+	return{
+		addTask:newTask=>{dispatch(addTaskAction(newTask))}
+	}
+}
+function mapStateToProps(state){
+	return {last_id:state.tasks.length};
+	}
+export default connect(mapStateToProps,mapDispatchToProps)(Additive);

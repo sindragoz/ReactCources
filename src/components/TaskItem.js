@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
+import { bindActionCreators } from "redux";
 export default class TaskItem extends React.Component{
 	constructor(props){
 		super(props);
@@ -8,13 +8,18 @@ export default class TaskItem extends React.Component{
 
 	setFavoriteEvent=task=>{
 		if(this.props.setFavorite)
-			this.props.setFavorite(task);
+			this.props.setFavorite(this.props.id);
 		return;
 	}
-
+	statusBtnClick(event){
+		this.props.changeStatus(this.props.id);
+	}
+	delBtnClick(event){
+		this.props.replaceFunction(this.props.id);
+	}
 	render(){
-		let {TaskProps,match,id}=this.props;
-		let {name,descr,group,date,filterVisible,favorite}=TaskProps;
+		let {TaskProps,match}=this.props;
+		let {id,name,descr,group,date,filterVisible,favorite,isDeleted}=TaskProps;
 		let cName;
 		let yyyymmdd=date?date.toLocaleDateString():'';
 		let hhmmss=date||date?date.toLocaleTimeString():'Нет срока';
@@ -27,19 +32,19 @@ export default class TaskItem extends React.Component{
 	return (filterVisible?(
 		<div className={'TaskItem '+(favorite?' fav':' nofav')}>
 			<div>
-				<div className={'status '+cName}>					
+				<div className={'status '+cName} onClick={this.statusBtnClick.bind(this)}>					
 						{cName=='todo'?(<span></span>):(cName=='doing'?(<span>&#9658;</span>):(<span>&#10004;</span>))}
 					
 				</div>
 				<div>
-					<Link to={`${match.path}/${id}`}>
+					<Link to={`${match.path}/${this.props.id}`}>
 						{name}<span style={{fontStyle:'italic',textAlign:'right'}}>до {hhmmss+' '+yyyymmdd}</span>
 					</Link>
 				</div>
 				<div>
-					<span>&#9998;</span >
+					<Link to={`${match.path}/task-${this.props.id}/edit`}><span>&#9998;</span ></Link>
 					<span style={{color:favorite?'gold':'black'}} onClick={()=>this.setFavoriteEvent(TaskProps)}>&#9733;</span>
-					<span onClick={()=>this.props.replaceFunction(TaskProps)}>
+					<span onClick={this.delBtnClick.bind(this)}>
 						{this.props.replaceIcon=='v'?(<span>&#8634;</span>):(<span>&#128465;</span>)}
 					</span>
 				</div>
@@ -50,31 +55,3 @@ export default class TaskItem extends React.Component{
 		):(<div></div>));
 	}	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-return (filterVisible?(<tr>
-	<td className={favorite?'fav':'nofav'}>
-	<span className={this.props.replaceIcon} onClick={()=>this.props.replaceFunction(taskProps)}>
-	{this.props.replaceIcon==='x'?(<span>&#10008;</span>):(<span>&#10004;</span>)}
-		</span>
-		<span className='favorite' onClick={()=>this.setFavoriteEvent(taskProps)}>&#9733;</span>{name}
-		</td>
-	<td>{descr}{descr===undefined||descr===''?(<span>-</span>):(<span></span>)}</td>
-	<td className={cName}>{group}</td>
-	<td>{yyyymmdd} <span style={{fontStyle:'italic'}}>{hhmmss}</span></td></tr>):(<tr></tr>));
-*/

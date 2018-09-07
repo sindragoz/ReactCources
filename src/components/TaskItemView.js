@@ -1,18 +1,22 @@
 import React from 'react';
-import Tasks from './Tasks';
+import {connect} from 'react-redux';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-export default class TaskItemView extends React.Component{
+
+
+class TaskItemView extends React.Component{
 	
 		constructor({match}){	
 		let deletedTasks=[];
 		super(...match);		
 	}
 	render(){
+
 		const {match}=this.props;
-		const{name,descr,date,group}=Tasks[+match.params.item_id];
+		const{name,descr,date,group}=this.props.list[+match.params.item_id];
 		const yyyymmdd=date?date.toLocaleDateString():'';
 		const hhmmss=date||date?date.toLocaleTimeString():'Нет срока';
+
 		return(
 		<div>
 			<h1>Задача № {+match.params.item_id+1}</h1>
@@ -34,7 +38,12 @@ export default class TaskItemView extends React.Component{
 				<p>до {hhmmss+' '+yyyymmdd}</p>
 			</div>
 			<Link to="/list">назад</Link>
-		</div>
+			</div>
 		);
 	}
 }
+
+function mapStateToProps(state){
+	return {list:state.tasks};
+	}
+export default connect(mapStateToProps)(TaskItemView);

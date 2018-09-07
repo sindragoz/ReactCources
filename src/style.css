@@ -152,8 +152,8 @@ div:nth-child(1) button{
 .Unactivated{
 	color:gray;
 }
-.TaskItem a, a:hover, a:visited{
-	color:inherit;
+.TaskItem a, a:hover, a:active, a:visited{
+	color:black;
 	font-style:inherit;
 	text-decoration: inherit;
 }
