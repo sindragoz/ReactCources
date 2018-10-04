@@ -1,0 +1,123 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import defineObjectivesRelevance from "./Relevance";
+import SpaceBreaks from "./SpaceBreaks";
+/* 
+import defineObjectivesSpaceBreaks from "./view-defineObjectives-spacebreaks"; */
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+  },
+  tabsRoot: {
+    borderBottom: '1px solid #e8e8e8',
+  },
+  tabsIndicator: {
+    backgroundColor: '#1890ff',
+  },
+  tabRoot: {
+    textTransform: 'initial',
+    minWidth: 72,
+    fontWeight: theme.typography.fontWeightRegular,
+    marginRight: theme.spacing.unit * 4,
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    '&:hover': {
+      color: '#40a9ff',
+      opacity: 1,
+    },
+    '&$tabSelected': {
+      color: '#1890ff',
+      fontWeight: theme.typography.fontWeightMedium,
+    },
+    '&:focus': {
+      color: '#40a9ff',
+    },
+  },
+  tabSelected: {},
+  typography: {
+    padding: theme.spacing.unit * 3,
+  },
+  content: {
+    padding: '20px'
+  },
+});
+
+class defineObjectives extends React.Component {
+  state = {
+    subView: (this.props.match.params.subView) ? this.props.match.params.subView : 'product-data',
+    tabValue: (this.props.match.params.tabs) ? this.props.match.params.tabs : 'relevance',
+    reviewId: this.props.match.params.reviewId,
+  };
+
+  handleChange = (event, value) => {
+    this.setState({ tabValue: value });
+    this.props.history.push('/shelf-reviews/view/' + this.state.reviewId + '/objectives/' + value);
+  };
+
+  render() {
+    const { classes } = this.props;
+    // const {value} = this.state;
+
+    return (
+      <div className={classes.root}>
+        <Tabs
+          value={this.state.tabValue}
+          onChange={this.handleChange}
+          classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
+        >
+          <Tab
+            // disableRipple
+            value="relevance"
+            classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+            label="Set Relevance"
+          />
+          <Tab
+            // disableRipple
+            value="space-breaks"
+            classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+            label="Manage Space Breaks"
+          />
+        </Tabs>
+        <div className={classes.content}>
+          <Switch>
+            <Route exact path='/shelf-reviews/view/:reviewId/objectives/relevance'
+              component={defineObjectivesRelevance}
+              reviewId={this.state.reviewId}
+              subTab='relevance'
+            />
+            <Route exact path='/shelf-reviews/view/:reviewId/objectives/space-breaks'
+              component={SpaceBreaks}
+              reviewId={this.state.reviewId}
+              subTab='space-breaks'
+              />
+              {/*
+          */}
+            <Redirect to={'/shelf-reviews/view/' + this.state.reviewId + '/objectives/relevance'} />
+          </Switch>
+        </div>
+      </div>
+    );
+  }
+}
+
+defineObjectives.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(defineObjectives);
