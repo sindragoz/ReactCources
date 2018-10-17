@@ -1,0 +1,35 @@
+.dendrogram__wrap {
+  height: 600px;
+  overflow-y: scroll;
+}
+
+.dendrogram {
+  width: 950px;
+  height: 10000px;
+}
+
+.node {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.nodes, .links {
+  transform: translate(10px, 0px);
+}
+
+.node__text {
+  font-size: 12px;
+}
+
+.links {
+  path {
+    stroke-width: 1px;
+    fill: none;
+    stroke: #000;
+  }
+}
+
+.node_selected {
+  fill: darkgreen;
+}
