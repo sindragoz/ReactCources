@@ -1,12 +1,3 @@
-import React from 'react';
-import Dendrogram from './dendrogram';
-
-
-const TreeView = ({ args }) => (
-  <div>
-    <p>Template Component productData</p>
-    {/* <Dendrogram /> */}
-  </div>
-);
+import TreeView from './TreeView';
 
 export default TreeView;
